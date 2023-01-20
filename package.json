@@ -10,6 +10,6 @@
       "email": "axelsevenet@gmail.com"
     },
     "dependencies": {
-        "com.seven.editor" : "0.0.1"
+        "com.seven.utility" : "0.0.1"
     }
 }
