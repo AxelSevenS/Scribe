@@ -9,7 +9,7 @@ namespace Scribe {
     [System.Serializable]
     public abstract class ScribeEvent<TEvent> : ScribeEvent where TEvent : System.Enum  {
 
-        public EventMultiCondition conditions;
+        public ScribeEventMultiCondition conditions;
 
         public TEvent eventType;
 

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Scribe {
 
     [System.Serializable]
-    public class EventCondition {
+    public class ScribeEventCondition {
 
         public ConditionType conditionType;
         public ScribeFlags.FlagType flagType;

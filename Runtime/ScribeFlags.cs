@@ -6,8 +6,8 @@ namespace Scribe {
 
     public static class ScribeFlags {
         
-        internal static Dictionary<string, int> flags = new Dictionary<string, int>();
-        internal static Dictionary<string, int> tempFlags = new Dictionary<string, int>();
+        public static Dictionary<string, int> flags = new Dictionary<string, int>();
+        public static Dictionary<string, int> tempFlags = new Dictionary<string, int>();
 
 
         public static void SetFlag(string flagName, int flagValue, bool isTemporary = false) {

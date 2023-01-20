@@ -5,10 +5,10 @@ using UnityEngine;
 namespace Scribe {
 
     [System.Serializable]
-    public class EventSubCondition {
+    public class ScribeEventSubCondition {
 
         public BinaryOperationType binaryOperation;
-        public EventCondition condition;
+        public ScribeEventCondition condition;
 
 
 

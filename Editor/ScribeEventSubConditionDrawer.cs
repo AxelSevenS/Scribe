@@ -4,8 +4,8 @@ using System;
 
 namespace Scribe.UI {
 
-    [CustomPropertyDrawer( typeof( EventSubCondition ), true )]
-    public class EventSubConditionDrawer : PropertyDrawer {
+    [CustomPropertyDrawer( typeof( ScribeEventSubCondition ), true )]
+    public class ScribeEventSubConditionDrawer : PropertyDrawer {
 
 
         public override void OnGUI( Rect position, SerializedProperty property, GUIContent label ) {
