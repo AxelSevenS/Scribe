@@ -36,10 +36,10 @@ namespace Scribe.UI {
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
             SerializedProperty propCondition = property.FindPropertyRelative( "condition" );
-            float height = EditorGUI.GetPropertyHeight(propCondition) + EditorGUIUtility.standardVerticalSpacing;
+            float height = EditorGUI.GetPropertyHeight(propCondition);
 
             if (propCondition.FindPropertyRelative( "conditionType" ).intValue != 2) {
-                height += EditorGUI.GetPropertyHeight(property.FindPropertyRelative( "subConditions" ));
+                height += EditorGUI.GetPropertyHeight(property.FindPropertyRelative( "subConditions" )) + EditorGUIUtility.standardVerticalSpacing;
             }
 
             return height;

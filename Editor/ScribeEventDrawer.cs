@@ -54,6 +54,7 @@ namespace Scribe.UI {
                     height += EditorGUI.GetPropertyHeight(prop) + EditorGUIUtility.standardVerticalSpacing;
                 }
             );
+            height -= EditorGUIUtility.standardVerticalSpacing;
 
             return height;
         }
