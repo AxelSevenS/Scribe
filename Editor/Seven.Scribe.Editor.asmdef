@@ -1,0 +1,17 @@
+{
+    "name": "Seven.Scribe.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:53504cd1940d207409499208bb1635db",
+        "GUID:697c314a60605014b95f130f815bb437"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
