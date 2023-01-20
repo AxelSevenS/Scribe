@@ -67,29 +67,14 @@ namespace Scribe.UI {
                 scribeEventType = scribeEvent.GetType();
             }
 
-            System.Reflection.FieldInfo[] fields = scribeEventType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            
+            int eventType = property.FindPropertyRelative( "eventType" ).intValue;
+            string[] propertyNames = ScribeEditorUtility.GetScribeEventProperties(scribeEventType, eventType);
 
-            SerializedProperty propEventData = property.FindPropertyRelative( "eventType" );
-            int eventType = propEventData.intValue;
-
-            while (propEventData.NextVisible(false) && propEventData.depth > 0) {
-                // Get field with the property name
-                System.Reflection.FieldInfo field = System.Array.Find(fields, f => f.Name == propEventData.name);
-                
-                // Get attribute data from field
-                System.Attribute[] attributes = System.Attribute.GetCustomAttributes(field);
-
-                // Check if the field has the HideInInspector attribute
-                bool isCorrectEventTypeData = System.Array.Exists(attributes, a => 
-                    a is ScribeEventDataAttribute scribeEventDataAttribute && 
-                    Convert.ToInt32(scribeEventDataAttribute.eventType) == eventType);
-
-                if (isCorrectEventTypeData)
-                    callback(propEventData);
-
-
+            foreach (string propertyName in propertyNames) {
+                SerializedProperty prop = property.FindPropertyRelative(propertyName);
+                callback(prop);
             }
+            
         }
 
 
