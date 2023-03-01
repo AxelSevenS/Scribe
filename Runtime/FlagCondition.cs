@@ -1,62 +1,50 @@
+using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
-
-// using SeleneGame.Core.UI;
 
 namespace Scribe {
 
     [System.Serializable]
-    public class ScribeEventCondition {
+    public sealed class FlagCondition : ScribeCondition<FlagCondition.FlagOperationType> {
 
-        public ConditionType conditionType;
-        public ScribeFlags.FlagType flagType;
-        public string flagName;
-        public OperatorType operatorType;
-        public int flagValue;
+        [ScribeField] public ScribeFlags.FlagType flagType;
+        [ScribeField] public string flagName;
+        [ScribeField] public int flagValue;
 
+        public override bool Evaluate() {
 
-
-        public bool Evaluate() {
-
-            if (conditionType == ConditionType.Always)
+            if (binaryModifier == BinaryModifier.Always)
                 return true;
 
             int flagValue = ScribeFlags.GetFlag(flagName, flagType == ScribeFlags.FlagType.TemporaryFlag);
 
             bool postOperation = false;
-            switch (operatorType) {
-                case OperatorType.Equals:
+            switch (conditionType) {
+                case FlagOperationType.Equals:
                     postOperation = flagValue == this.flagValue;
                     break;
-                case OperatorType.NotEquals:
+                case FlagOperationType.NotEquals:
                     postOperation = flagValue != this.flagValue;
                     break;
-                case OperatorType.GreaterThan:
+                case FlagOperationType.GreaterThan:
                     postOperation = flagValue > this.flagValue;
                     break;
-                case OperatorType.LessThan:
+                case FlagOperationType.LessThan:
                     postOperation = flagValue < this.flagValue;
                     break;
-                case OperatorType.GreaterThanOrEquals:
+                case FlagOperationType.GreaterThanOrEquals:
                     postOperation = flagValue >= this.flagValue;
                     break;
-                case OperatorType.LessThanOrEquals:
+                case FlagOperationType.LessThanOrEquals:
                     postOperation = flagValue <= this.flagValue;
                     break;
             }
 
-            return conditionType == ConditionType.If ? postOperation : !postOperation;
+            return binaryModifier == BinaryModifier.If ? postOperation : !postOperation;
         }
 
 
-        public enum ConditionType {
-            If,
-            IfNot,
-            Always
-        }
-
-        public enum OperatorType {
+        public enum FlagOperationType {
             Equals,
             NotEquals,
             GreaterThan,

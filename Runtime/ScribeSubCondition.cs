@@ -4,24 +4,26 @@ using UnityEngine;
 
 namespace Scribe {
 
-    [System.Serializable]
-    public class ScribeEventSubCondition {
+    public abstract class ScribeSubCondition {
 
         public BinaryOperationType binaryOperation;
-        public ScribeEventCondition condition;
-
-
-
-        public bool Evaluate(bool left) {
-
-            bool right = condition.Evaluate();
-            return (binaryOperation == BinaryOperationType.And) ? (left & right) : (left | right);
-        }
 
 
         public enum BinaryOperationType {
             And,
             Or
+        }
+    }
+
+    [System.Serializable]
+    public class ScribeSubCondition<TCondition> : ScribeSubCondition where TCondition : ScribeCondition {
+
+        public TCondition condition;
+        
+        public bool Evaluate(bool left) {
+
+            bool right = condition.Evaluate();
+            return (binaryOperation == BinaryOperationType.And) ? (left & right) : (left | right);
         }
     }
 }

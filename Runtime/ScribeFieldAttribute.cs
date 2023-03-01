@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Scribe {
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = true)]
-    public class ScribeEventDataAttribute : PropertyAttribute {
+    public class ScribeFieldAttribute : PropertyAttribute {
 
         public int eventType;
 
-        public ScribeEventDataAttribute(int eventType) {
+        public ScribeFieldAttribute(int eventType = -1) {
             this.eventType = eventType;
         }
     }

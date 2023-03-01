@@ -10,12 +10,12 @@ namespace Scribe.UI {
 
     public static class ScribeEditorUtility {
 
-        public static readonly Dictionary<Type, List<ScribeEventData>> scribeEventTypesData = new Dictionary<Type, List<ScribeEventData>>();
+        public static readonly Dictionary<Type, List<ScribeFieldData>> ScribeTypeData = new Dictionary<Type, List<ScribeFieldData>>();
         
         [UnityEditor.Callbacks.DidReloadScripts]
         [MenuItem ("Scribe/Cache Type Data")]
         private static void CacheScribeEventTypes() {
-            scribeEventTypesData.Clear();
+            ScribeTypeData.Clear();
 
 
             Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
@@ -23,7 +23,7 @@ namespace Scribe.UI {
             foreach (Assembly assembly in assemblies) {
                 Type[] types = assembly.GetTypes();
                 foreach (Type type in types) {
-                    if (typeof(ScribeEvent).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract) {
+                    if (typeof(ScribeEvent).IsAssignableFrom(type) || typeof(ScribeCondition).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract) {
                         CacheScribeEventTypeData(type);
                     }
                 }
@@ -33,11 +33,12 @@ namespace Scribe.UI {
         }
 
         public static string[] GetScribeEventProperties(Type scribeEventType, int eventType) {
-            if ( !scribeEventTypesData.ContainsKey(scribeEventType) )
+
+            if ( !ScribeTypeData.ContainsKey(scribeEventType) )
                 CacheScribeEventTypeData(scribeEventType);
 
-            return scribeEventTypesData[scribeEventType]
-                .Where(scribeEventData => scribeEventData.scribeEventType == eventType)
+            return ScribeTypeData[scribeEventType]
+                .Where(scribeEventData => scribeEventData.scribeEventType == eventType || scribeEventData.scribeEventType < 0)
                 .Select(scribeEventData => scribeEventData.propertyName)
                 .ToArray();
         }
@@ -45,32 +46,33 @@ namespace Scribe.UI {
         private static void CacheScribeEventTypeData(Type scribeEventType) {
             FieldInfo[] fields = scribeEventType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
+            if (!ScribeEditorUtility.ScribeTypeData.ContainsKey(scribeEventType))
+                ScribeEditorUtility.ScribeTypeData.Add(scribeEventType, Enumerable.Empty<ScribeFieldData>().ToList());
+
             foreach (FieldInfo field in fields) {
+
+                // Check if field is serialized
+                if ( !field.IsPublic && !field.IsDefined(typeof(SerializeField), false) && !field.IsDefined(typeof(SerializeField), false) )
+                    continue;
 
                 // Get attribute data from field
                 System.Attribute[] attributes = System.Attribute.GetCustomAttributes(field);
 
-                // Get all attributes of Type ScribeEventDataAttribute
-                ScribeEventDataAttribute[] scribeEventDataAttributes = attributes.OfType<ScribeEventDataAttribute>().ToArray();
+                // Get all attributes of Type ScribeFieldAttribute
+                ScribeFieldAttribute[] scribeEventDataAttributes = attributes.OfType<ScribeFieldAttribute>().ToArray();
 
-                foreach (ScribeEventDataAttribute scribeEventDataAttribute in scribeEventDataAttributes) {
-                    ScribeEventData scribeEventData = new ScribeEventData {
+                foreach (ScribeFieldAttribute scribeEventDataAttribute in scribeEventDataAttributes) {
+                    ScribeFieldData scribeEventData = new ScribeFieldData {
                         scribeEventType = scribeEventDataAttribute.eventType,
                         propertyName = field.Name
                     };
 
-                    if (ScribeEditorUtility.scribeEventTypesData.ContainsKey(scribeEventType)) {
-                        ScribeEditorUtility.scribeEventTypesData[scribeEventType].Add(scribeEventData);
-
-                    } else {
-                        ScribeEditorUtility.scribeEventTypesData.Add(scribeEventType, new List<ScribeEventData> { scribeEventData });
-
-                    }
+                    ScribeEditorUtility.ScribeTypeData[scribeEventType].Add(scribeEventData);
                 }
             }
         }
 
-        public struct ScribeEventData {
+        public struct ScribeFieldData {
             public int scribeEventType;
             public string propertyName;
         }

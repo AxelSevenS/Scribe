@@ -4,8 +4,8 @@ using System;
 
 namespace Scribe.UI {
 
-    [CustomPropertyDrawer( typeof( ScribeEventSubCondition ), true )]
-    public class ScribeEventSubConditionDrawer : PropertyDrawer {
+    [CustomPropertyDrawer( typeof( ScribeSubCondition ), true )]
+    public class ScribeSubConditionDrawer : PropertyDrawer {
 
 
         public override void OnGUI( Rect position, SerializedProperty property, GUIContent label ) {
@@ -33,7 +33,9 @@ namespace Scribe.UI {
 
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-            return EditorGUI.GetPropertyHeight(property.FindPropertyRelative( "binaryOperation" )) + EditorGUI.GetPropertyHeight(property.FindPropertyRelative( "condition" ));
+            SerializedProperty propBinaryOperation = property.FindPropertyRelative( "binaryOperation" );
+            SerializedProperty propCondition = property.FindPropertyRelative( "condition" );
+            return EditorGUI.GetPropertyHeight(propBinaryOperation) + EditorGUIUtility.standardVerticalSpacing + EditorGUI.GetPropertyHeight(propCondition);
         }
     }
 

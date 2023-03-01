@@ -13,6 +13,8 @@ namespace Scribe.UI {
 
         private static Type scribeEventType;
 
+        private const float CONDITION_PROPERTY_SPACE = 10f;
+
         public override void OnGUI( Rect position, SerializedProperty property, GUIContent label ) {
 
             Rect rectType = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
@@ -25,6 +27,9 @@ namespace Scribe.UI {
             EditorGUI.PropertyField( rectType, propConditions, GUIContent.none );
                 
             rectType.y += EditorGUI.GetPropertyHeight(propConditions) + EditorGUIUtility.standardVerticalSpacing;
+
+
+            rectType.y += CONDITION_PROPERTY_SPACE;
 
 
             SerializedProperty propEventType = property.FindPropertyRelative( "eventType" );
@@ -46,9 +51,13 @@ namespace Scribe.UI {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
             
             SerializedProperty propConditions = property.FindPropertyRelative( "conditions" );
-            SerializedProperty propEventType = property.FindPropertyRelative( "eventType" );
+            float height = EditorGUI.GetPropertyHeight(propConditions) + EditorGUIUtility.standardVerticalSpacing;
 
-            float height = EditorGUI.GetPropertyHeight(propConditions) + EditorGUIUtility.standardVerticalSpacing + EditorGUI.GetPropertyHeight(propEventType) + EditorGUIUtility.standardVerticalSpacing;
+            height += CONDITION_PROPERTY_SPACE;
+
+            SerializedProperty propEventType = property.FindPropertyRelative( "eventType" );
+            height += EditorGUI.GetPropertyHeight(propEventType) + EditorGUIUtility.standardVerticalSpacing;
+
 
             IterateOverEventProperties(property, fieldInfo, (prop) => {
                     height += EditorGUI.GetPropertyHeight(prop) + EditorGUIUtility.standardVerticalSpacing;
@@ -61,6 +70,13 @@ namespace Scribe.UI {
 
 
         private void IterateOverEventProperties(SerializedProperty property, FieldInfo fieldInfo, Action<SerializedProperty> callback) {
+
+            SerializedProperty propEventType = property.FindPropertyRelative( "eventType" );
+
+            if (propEventType == null)
+                return;
+
+                
             // TODO : Find a better way to obtain the type of the ScribeEvent
             if (scribeEventType == null) {
                 ScribeEvent scribeEvent = SevenEditorUtility.GetTargetObject(property) as ScribeEvent;
