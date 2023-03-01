@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Scribe {
 
     public abstract class ScribeEvent {
-        public abstract bool Evaluate();
+        // protected abstract bool EvaluateConditions();
         
-        protected abstract void Invoke();
+        // protected abstract void InvokeEvent();
     }
 
     [System.Serializable]
@@ -19,7 +19,7 @@ namespace Scribe {
 
 
 
-        public sealed override bool Evaluate() => conditions.Evaluate();
+        // protected sealed override bool EvaluateConditions() => conditions.Evaluate();
     }
 
 }

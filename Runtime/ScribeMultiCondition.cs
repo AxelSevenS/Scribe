@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Scribe {
 
     public abstract class ScribeMultiCondition {
-        public abstract bool Evaluate();
+        // public abstract bool Evaluate();
     }
 
     [System.Serializable]
@@ -15,15 +15,15 @@ namespace Scribe {
         public ScribeSubCondition<TCondition>[] subConditions;
 
 
-        public override bool Evaluate() {
-            if (condition.binaryModifier == ScribeCondition.BinaryModifier.Always) return true;
+        // public override bool Evaluate() {
+        //     if (condition.binaryModifier == ScribeCondition.BinaryModifier.Always) return true;
 
-            bool conditionsMet = condition.Evaluate();
-            foreach (ScribeSubCondition<TCondition> subCondition in subConditions) {
-                conditionsMet = subCondition.Evaluate(conditionsMet);
-            }
-            return conditionsMet;
-        }
+        //     bool conditionsMet = condition.Evaluate();
+        //     foreach (ScribeSubCondition<TCondition> subCondition in subConditions) {
+        //         conditionsMet = subCondition.MultiConditionEvaluate(conditionsMet, subCondition.condition.Evaluate());
+        //     }
+        //     return conditionsMet;
+        // }
     }
     
 }

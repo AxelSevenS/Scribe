@@ -19,11 +19,9 @@ namespace Scribe {
     public class ScribeSubCondition<TCondition> : ScribeSubCondition where TCondition : ScribeCondition {
 
         public TCondition condition;
-        
-        public bool Evaluate(bool left) {
 
-            bool right = condition.Evaluate();
+        public bool MultiConditionEvaluate(bool left, bool right) {
             return (binaryOperation == BinaryOperationType.And) ? (left & right) : (left | right);
-        }
+        } 
     }
 }

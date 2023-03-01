@@ -12,7 +12,7 @@ namespace Scribe {
 
         public BinaryModifier binaryModifier;
 
-        public abstract bool Evaluate();
+        // public abstract bool Evaluate();
 
         public enum BinaryModifier {
             If,

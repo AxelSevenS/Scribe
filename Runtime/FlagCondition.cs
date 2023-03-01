@@ -11,7 +11,7 @@ namespace Scribe {
         [ScribeField] public string flagName;
         [ScribeField] public int flagValue;
 
-        public override bool Evaluate() {
+        public bool Evaluate() {
 
             if (binaryModifier == BinaryModifier.Always)
                 return true;
