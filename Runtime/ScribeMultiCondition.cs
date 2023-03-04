@@ -4,26 +4,16 @@ using UnityEngine;
 
 namespace Scribe {
 
+    [System.Serializable]
     public abstract class ScribeMultiCondition {
-        // public abstract bool Evaluate();
     }
 
     [System.Serializable]
-    public class ScribeMultiCondition<TCondition> : ScribeMultiCondition where TCondition : ScribeCondition {
+    public class ScribeMultiCondition<TCondition> : ScribeMultiCondition where TCondition : ScribeCondition, new() {
 
-        public TCondition condition;
-        public ScribeSubCondition<TCondition>[] subConditions;
+        public TCondition condition = new TCondition();
+        public List<ScribeSubCondition<TCondition>> subConditions = new List<ScribeSubCondition<TCondition>>();
 
-
-        // public override bool Evaluate() {
-        //     if (condition.binaryModifier == ScribeCondition.BinaryModifier.Always) return true;
-
-        //     bool conditionsMet = condition.Evaluate();
-        //     foreach (ScribeSubCondition<TCondition> subCondition in subConditions) {
-        //         conditionsMet = subCondition.MultiConditionEvaluate(conditionsMet, subCondition.condition.Evaluate());
-        //     }
-        //     return conditionsMet;
-        // }
     }
     
 }

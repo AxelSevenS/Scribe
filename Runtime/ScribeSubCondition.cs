@@ -4,10 +4,15 @@ using UnityEngine;
 
 namespace Scribe {
 
+    [System.Serializable]
     public abstract class ScribeSubCondition {
 
         public BinaryOperationType binaryOperation;
 
+
+        public bool MultiConditionEvaluate(bool left, bool right) {
+            return (binaryOperation == BinaryOperationType.And) ? (left & right) : (left | right);
+        } 
 
         public enum BinaryOperationType {
             And,
@@ -16,12 +21,8 @@ namespace Scribe {
     }
 
     [System.Serializable]
-    public class ScribeSubCondition<TCondition> : ScribeSubCondition where TCondition : ScribeCondition {
+    public class ScribeSubCondition<TCondition> : ScribeSubCondition where TCondition : ScribeCondition, new() {
 
-        public TCondition condition;
-
-        public bool MultiConditionEvaluate(bool left, bool right) {
-            return (binaryOperation == BinaryOperationType.And) ? (left & right) : (left | right);
-        } 
+        public TCondition condition = new TCondition();
     }
 }

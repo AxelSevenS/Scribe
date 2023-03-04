@@ -7,10 +7,12 @@ namespace Scribe {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = true)]
     public class ScribeFieldAttribute : PropertyAttribute {
 
-        public int eventType;
+        public string optionName;
+        public int optionValue;
 
-        public ScribeFieldAttribute(int eventType = -1) {
-            this.eventType = eventType;
+        public ScribeFieldAttribute(string optionName, int optionValue) {
+            this.optionName = optionName;
+            this.optionValue = optionValue;
         }
     }
 }

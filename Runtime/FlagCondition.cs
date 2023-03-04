@@ -5,11 +5,19 @@ using UnityEngine;
 namespace Scribe {
 
     [System.Serializable]
-    public sealed class FlagCondition : ScribeCondition<FlagCondition.FlagOperationType> {
+    public sealed class FlagCondition : ScribeCondition {
 
-        [ScribeField] public ScribeFlags.FlagType flagType;
-        [ScribeField] public string flagName;
-        [ScribeField] public int flagValue;
+        [ScribeHideLabel]
+        public ScribeFlags.FlagType flagType;
+
+        public string flagName;
+
+        [ScribeHideLabel]
+        public FlagOperationType operationType;
+
+        public int flagValue;
+
+
 
         public bool Evaluate() {
 
@@ -19,7 +27,7 @@ namespace Scribe {
             int flagValue = ScribeFlags.GetFlag(flagName, flagType == ScribeFlags.FlagType.TemporaryFlag);
 
             bool postOperation = false;
-            switch (conditionType) {
+            switch (operationType) {
                 case FlagOperationType.Equals:
                     postOperation = flagValue == this.flagValue;
                     break;
@@ -42,6 +50,7 @@ namespace Scribe {
 
             return binaryModifier == BinaryModifier.If ? postOperation : !postOperation;
         }
+
 
 
         public enum FlagOperationType {

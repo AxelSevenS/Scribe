@@ -5,15 +5,30 @@ using UnityEngine;
 using UnityEditor;
 
 using SevenGame.Utility.Editor;
+using System.Collections.Generic;
 
 namespace Scribe.UI {
 
     [CustomPropertyDrawer( typeof( ScribeEvent ), true )]
     public class ScribeEventDrawer : PropertyDrawer {
 
-        private static Type scribeEventType;
+        private Type _scribeEventType;
 
-        private const float CONDITION_PROPERTY_SPACE = 10f;
+        private const float CONDITION_PROPERTY_SPACE = 5f;
+
+
+        private Type GetTypeOfEvent(SerializedProperty property) {
+            if (_scribeEventType == null) {
+                object scribeEvent = SevenEditorUtility.GetTargetObject(property);
+                _scribeEventType = scribeEvent.GetType();
+            }
+            return _scribeEventType;
+        }
+
+        private bool IsExpandedConditionsField(SerializedProperty property) {
+            return property.name == "conditions" && property.FindPropertyRelative("condition").FindPropertyRelative("binaryModifier").intValue != 2;
+        }
+
 
         public override void OnGUI( Rect position, SerializedProperty property, GUIContent label ) {
 
@@ -22,25 +37,17 @@ namespace Scribe.UI {
 
             EditorGUI.BeginProperty( position, label, property );
 
+            
+            ScribeEditorUtility.IterateThroughScribeObjectFields(GetTypeOfEvent(property), property, (prop, showLabel) => {
 
-            SerializedProperty propConditions = property.FindPropertyRelative( "conditions" );
-            EditorGUI.PropertyField( rectType, propConditions, GUIContent.none );
-                
-            rectType.y += EditorGUI.GetPropertyHeight(propConditions) + EditorGUIUtility.standardVerticalSpacing;
+                    GUIContent labelContent = showLabel ? new GUIContent(prop.displayName) : GUIContent.none;
 
+                    EditorGUI.PropertyField( rectType, prop, labelContent );
+                    rectType.y += EditorGUI.GetPropertyHeight(prop, labelContent) + EditorGUIUtility.standardVerticalSpacing;
 
-            rectType.y += CONDITION_PROPERTY_SPACE;
-
-
-            SerializedProperty propEventType = property.FindPropertyRelative( "eventType" );
-            EditorGUI.PropertyField( rectType, propEventType, GUIContent.none );
-                
-            rectType.y += EditorGUI.GetPropertyHeight(propEventType) + EditorGUIUtility.standardVerticalSpacing;
-
-
-            IterateOverEventProperties(property, fieldInfo, (prop) => {
-                    EditorGUI.PropertyField( rectType, prop, GUIContent.none );
-                    rectType.y += EditorGUI.GetPropertyHeight(prop) + EditorGUIUtility.standardVerticalSpacing;
+                    if ( IsExpandedConditionsField(prop) ) {
+                        rectType.y += CONDITION_PROPERTY_SPACE;
+                    }
                 }
             );
 
@@ -50,47 +57,22 @@ namespace Scribe.UI {
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
             
-            SerializedProperty propConditions = property.FindPropertyRelative( "conditions" );
-            float height = EditorGUI.GetPropertyHeight(propConditions) + EditorGUIUtility.standardVerticalSpacing;
+            float height = 0;
+            
+            ScribeEditorUtility.IterateThroughScribeObjectFields(GetTypeOfEvent(property), property, (prop, showLabel) => {
 
-            height += CONDITION_PROPERTY_SPACE;
+                    GUIContent labelContent = showLabel ? new GUIContent(prop.displayName) : GUIContent.none;
 
-            SerializedProperty propEventType = property.FindPropertyRelative( "eventType" );
-            height += EditorGUI.GetPropertyHeight(propEventType) + EditorGUIUtility.standardVerticalSpacing;
+                    height += EditorGUI.GetPropertyHeight(prop, labelContent) + EditorGUIUtility.standardVerticalSpacing;
 
-
-            IterateOverEventProperties(property, fieldInfo, (prop) => {
-                    height += EditorGUI.GetPropertyHeight(prop) + EditorGUIUtility.standardVerticalSpacing;
+                    if ( IsExpandedConditionsField(prop) ) {
+                        height += CONDITION_PROPERTY_SPACE;
+                    }
                 }
             );
             height -= EditorGUIUtility.standardVerticalSpacing;
 
             return height;
-        }
-
-
-        private void IterateOverEventProperties(SerializedProperty property, FieldInfo fieldInfo, Action<SerializedProperty> callback) {
-
-            SerializedProperty propEventType = property.FindPropertyRelative( "eventType" );
-
-            if (propEventType == null)
-                return;
-
-                
-            // TODO : Find a better way to obtain the type of the ScribeEvent
-            if (scribeEventType == null) {
-                ScribeEvent scribeEvent = SevenEditorUtility.GetTargetObject(property) as ScribeEvent;
-                scribeEventType = scribeEvent.GetType();
-            }
-
-            int eventType = property.FindPropertyRelative( "eventType" ).intValue;
-            string[] propertyNames = ScribeEditorUtility.GetScribeEventProperties(scribeEventType, eventType);
-
-            foreach (string propertyName in propertyNames) {
-                SerializedProperty prop = property.FindPropertyRelative(propertyName);
-                callback(prop);
-            }
-            
         }
 
 

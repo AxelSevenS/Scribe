@@ -4,22 +4,15 @@ using UnityEngine;
 
 namespace Scribe {
 
+    [System.Serializable]
     public abstract class ScribeEvent {
-        // protected abstract bool EvaluateConditions();
-        
-        // protected abstract void InvokeEvent();
     }
 
     [System.Serializable]
-    public abstract class ScribeEvent<TEvent, TCondition> : ScribeEvent where TEvent : System.Enum where TCondition : ScribeCondition {
+    public abstract class ScribeEvent<TCondition> : ScribeEvent where TCondition : ScribeCondition, new() {
 
-        public ScribeMultiCondition<TCondition> conditions;
+        public ScribeMultiCondition<TCondition> conditions = new ScribeMultiCondition<TCondition>();
 
-        public TEvent eventType;
-
-
-
-        // protected sealed override bool EvaluateConditions() => conditions.Evaluate();
     }
 
 }
