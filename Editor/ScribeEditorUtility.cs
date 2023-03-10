@@ -23,7 +23,7 @@ namespace Scribe.UI {
             foreach (Assembly assembly in assemblies) {
                 Type[] types = assembly.GetTypes();
                 foreach (Type type in types) {
-                    if (typeof(ScribeEvent).IsAssignableFrom(type) || typeof(ScribeCondition).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract) {
+                    if (typeof(ScribeAction).IsAssignableFrom(type) || typeof(ScribeCondition).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract) {
                         CacheScribeEventTypeData(type);
                     }
                 }

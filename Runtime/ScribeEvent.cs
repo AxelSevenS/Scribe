@@ -5,13 +5,10 @@ using UnityEngine;
 namespace Scribe {
 
     [System.Serializable]
-    public abstract class ScribeEvent {
-    }
-
-    [System.Serializable]
-    public abstract class ScribeEvent<TCondition> : ScribeEvent where TCondition : ScribeCondition, new() {
+    public class ScribeEvent<TAction, TCondition> where TAction : ScribeAction, new() where TCondition : ScribeCondition, new() {
 
         public ScribeMultiCondition<TCondition> conditions = new ScribeMultiCondition<TCondition>();
+        public List<TAction> actions = new List<TAction>();
 
     }
 

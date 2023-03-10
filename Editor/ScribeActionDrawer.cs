@@ -9,8 +9,8 @@ using System.Collections.Generic;
 
 namespace Scribe.UI {
 
-    [CustomPropertyDrawer( typeof( ScribeEvent ), true )]
-    public class ScribeEventDrawer : PropertyDrawer {
+    [CustomPropertyDrawer( typeof( ScribeAction ), true )]
+    public class ScribeActionDrawer : PropertyDrawer {
 
         private Type _scribeEventType;
 
