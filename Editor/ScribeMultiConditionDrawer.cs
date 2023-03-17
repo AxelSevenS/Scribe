@@ -4,7 +4,7 @@ using System;
 
 namespace Scribe.UI {
 
-    [CustomPropertyDrawer( typeof( ScribeMultiCondition ), true )]
+    [CustomPropertyDrawer( typeof( IScribeMultiCondition ), true )]
     public class ScribeMultiConditionDrawer : PropertyDrawer {
 
 
