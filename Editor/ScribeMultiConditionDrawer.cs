@@ -4,7 +4,7 @@ using System;
 
 namespace Scribe.UI {
 
-    [CustomPropertyDrawer( typeof( IScribeMultiCondition ), true )]
+    [CustomPropertyDrawer( typeof( ScribeMultiCondition<> ), true )]
     public class ScribeMultiConditionDrawer : PropertyDrawer {
 
 
@@ -24,8 +24,13 @@ namespace Scribe.UI {
 
             if (propCondition.FindPropertyRelative("binaryModifier").intValue != 2) {
                 SerializedProperty propSubConditions = property.FindPropertyRelative( "subConditions" );
-                EditorGUI.PropertyField( rectType, propSubConditions );
+                
+                try {
+                    EditorGUI.PropertyField( rectType, propSubConditions );
+                } catch (Exception) {
                     
+                }
+                
                 rectType.y += EditorGUI.GetPropertyHeight(propSubConditions);
             }
 

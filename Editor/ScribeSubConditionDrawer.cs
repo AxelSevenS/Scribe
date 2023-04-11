@@ -4,7 +4,7 @@ using System;
 
 namespace Scribe.UI {
 
-    [CustomPropertyDrawer( typeof( ScribeSubCondition ), true )]
+    [CustomPropertyDrawer( typeof( ScribeSubCondition<> ), true )]
     public class ScribeSubConditionDrawer : PropertyDrawer {
 
 

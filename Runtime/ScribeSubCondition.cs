@@ -5,7 +5,9 @@ using UnityEngine;
 namespace Scribe {
 
     [System.Serializable]
-    public abstract class ScribeSubCondition {
+    public class ScribeSubCondition<TCondition> where TCondition : ScribeCondition, new() {
+
+        public TCondition condition = new TCondition();
 
         public BinaryOperationType binaryOperation;
 
@@ -18,11 +20,5 @@ namespace Scribe {
             And,
             Or
         }
-    }
-
-    [System.Serializable]
-    public class ScribeSubCondition<TCondition> : ScribeSubCondition where TCondition : ScribeCondition, new() {
-
-        public TCondition condition = new TCondition();
     }
 }
