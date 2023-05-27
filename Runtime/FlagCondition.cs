@@ -17,7 +17,7 @@ namespace Scribe {
 
         public int flagValue;
 
-
+        
 
         public bool Evaluate() {
 
@@ -49,6 +49,7 @@ namespace Scribe {
             }
 
             return binaryModifier == BinaryModifier.If ? postOperation : !postOperation;
+
         }
 
 

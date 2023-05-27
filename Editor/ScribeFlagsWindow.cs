@@ -45,5 +45,9 @@ namespace Scribe.UI {
             }
         }
 
+        private void Update() {
+            Repaint();
+        }
+
     }
 }
