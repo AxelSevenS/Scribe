@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Scribe {
 
     [System.Serializable]
-    public sealed class FlagCondition : ScribeCondition {
+    public class FlagCondition : ScribeCondition {
 
         [ScribeHideLabel]
         public ScribeFlags.FlagType flagType;
