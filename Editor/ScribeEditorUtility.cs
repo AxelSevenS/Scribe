@@ -18,7 +18,7 @@ namespace Scribe.UI {
 
             scribeTypesData.Clear();
 
-            Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
             foreach (Assembly assembly in assemblies) {
                 Type[] types = assembly.GetTypes();
@@ -52,7 +52,7 @@ namespace Scribe.UI {
 
 
             if ( !scribeTypesData.ContainsKey(type) ) {
-                Debug.LogError($"ScribeEditorUtility: {type} is not a ScribeEvent or ScribeCondition. Please use ScribeEditorUtility.IterateThroughScribeObjectFields only on ScribeEvent or ScribeCondition types.");
+                Debug.LogError(message: $"{nameof(ScribeEditorUtility)}: {type} is not a ScribeEvent or ScribeCondition. Please use {nameof(IterateThroughScribeObjectFields)} only on ScribeEvent or ScribeCondition types.");
                 return;
             }
 
@@ -71,13 +71,13 @@ namespace Scribe.UI {
                 }
 
                 if ( !scribeTypesData[type].fieldsData.ContainsKey(prop.name) ) {
-                    Debug.LogWarning($"ScribeEditorUtility: {type} does not contain a field named {prop.name}.");
+                    Debug.LogWarning($"{nameof(ScribeEditorUtility)}: {type} does not contain a field named {prop.name}.");
                     continue;
                 }
 
                 // Check if the field should be displayed
                 bool showLabel = true;
-                if ( ScribeEditorUtility.scribeTypesData[type].showLabelFlags.TryGetValue(prop.name, out bool dictShowLabel) )
+                if ( scribeTypesData[type].showLabelFlags.TryGetValue(prop.name, out bool dictShowLabel) )
                     showLabel = dictShowLabel;
 
                 // If the field has no options, display it normally
@@ -88,10 +88,10 @@ namespace Scribe.UI {
 
                 // Get all option values for the current property
                 Dictionary<string, int> optionValues = new Dictionary<string, int>();
-                foreach (string optionName in ScribeEditorUtility.scribeTypesData[type].options) {
+                foreach (string optionName in scribeTypesData[type].options) {
                     SerializedProperty propOption = property.FindPropertyRelative( optionName );
                     try {
-                        int optionValue = (int)propOption.intValue;
+                        int optionValue = propOption.intValue;
                         optionValues.Add(optionName, optionValue);
                     } catch {}
                 }
@@ -99,7 +99,7 @@ namespace Scribe.UI {
                 // Check if any options validate the field
                 foreach( KeyValuePair<string, int> option in optionValues ) {
 
-                    if ( ScribeEditorUtility.IsScribeFieldDisplayed(type, prop.name, option.Key, option.Value) ) {
+                    if ( IsScribeFieldDisplayed(type, prop.name, option.Key, option.Value) ) {
                         callback(prop, showLabel);
                         break;
                     }
@@ -139,7 +139,7 @@ namespace Scribe.UI {
 
 
 
-                System.Attribute[] attributes = System.Attribute.GetCustomAttributes(field);
+                Attribute[] attributes = Attribute.GetCustomAttributes(field);
 
                 // Check if label should be hidden
                 if (attributes.OfType<ScribeHideLabelAttribute>().Count() != 0) {
@@ -157,7 +157,7 @@ namespace Scribe.UI {
                 // Check if field has any ScribeFieldData attributes
                 foreach (ScribeFieldAttribute scribeFieldDataAttribute in attributes.OfType<ScribeFieldAttribute>()) {
 
-                    ScribeFieldData scribeFieldData = new ScribeFieldData {
+                    ScribeFieldData scribeFieldData = new() {
                         optionName = scribeFieldDataAttribute.optionName,
                         optionValue = scribeFieldDataAttribute.optionValue
                     };
@@ -169,8 +169,8 @@ namespace Scribe.UI {
 
         public class ScribeTypeData {
             public List<string> options = Enumerable.Empty<string>().ToList();
-            public Dictionary<string, List<ScribeFieldData>> fieldsData = new Dictionary<string, List<ScribeFieldData>>();
-            public Dictionary<string, bool> showLabelFlags = new Dictionary<string, bool>();
+            public Dictionary<string, List<ScribeFieldData>> fieldsData = new();
+            public Dictionary<string, bool> showLabelFlags = new();
         }
 
         public class ScribeFieldData {

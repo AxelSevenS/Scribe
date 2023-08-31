@@ -1,9 +1,11 @@
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.Reflection;
-using SevenGame.Utility.Editor;
 using System.Collections.Generic;
+
+using UnityEngine;
+using UnityEditor;
+
+using SevenGame.Utility;
 
 namespace Scribe.UI {
 

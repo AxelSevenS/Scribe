@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor;
+using System.Linq;
+
 using UnityEngine;
+using UnityEditor;
+using UnityEditorInternal;
 
 using SevenGame.Utility;
-using SevenGame.Utility.Editor;
-using UnityEditorInternal;
-using System.Linq;
+
 
 namespace Scribe.UI {
 
@@ -25,7 +26,7 @@ namespace Scribe.UI {
 
         [MenuItem ("Scribe/Flags")]
         private static void ShowWindow() {
-            EditorWindow.GetWindow(typeof(ScribeFlagsWindow), false, "Scribe Flags");
+            GetWindow(typeof(ScribeFlagsWindow), false, "Scribe Flags");
         }
 
         private static ReorderableList CreateList(Dictionary<string, int> flagsDict, List<KeyValuePair<string ,int>> flagsList, string label, bool showAsBinary, Action<string, int> onFlagChanged) {
@@ -38,7 +39,7 @@ namespace Scribe.UI {
             list.drawNoneElementCallback = (Rect rect) => {
                 EditorGUI.LabelField(rect, "Dictionary is Empty");
             };
-            list.drawElementCallback = (UnityEngine.Rect rect, int index, bool isActive, bool isFocused) => {
+            list.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) => {
                 const float margin = 2f;
                 rect.y += EditorGUIUtility.standardVerticalSpacing;
                 float thirdWidth = rect.width / 3 - margin;
