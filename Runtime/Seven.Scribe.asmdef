@@ -1,3 +1,14 @@
 {
-	"name": "Seven.Scribe"
+    "name": "Seven.Scribe",
+    "rootNamespace": "Scribe",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

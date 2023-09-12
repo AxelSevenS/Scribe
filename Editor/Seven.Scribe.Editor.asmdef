@@ -1,6 +1,6 @@
 {
     "name": "Seven.Scribe.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "Scribe.UI",
     "references": [
         "GUID:53504cd1940d207409499208bb1635db",
         "GUID:697c314a60605014b95f130f815bb437",

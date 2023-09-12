@@ -1,13 +1,11 @@
-using System.Collections.Generic;
-
-using UnityEngine;
+using System;
 
 namespace Scribe {
 
-    [System.Serializable]
+    [Serializable]
     public class ScribeSubCondition<TCondition> where TCondition : ScribeCondition, new() {
 
-        public TCondition condition = new TCondition();
+        public TCondition condition = new();
 
         public BinaryOperationType binaryOperation;
 

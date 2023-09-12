@@ -1,14 +1,13 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Scribe {
 
-    [System.Serializable]
+    [Serializable]
     public class ScribeMultiCondition<TCondition> where TCondition : ScribeCondition, new() {
 
-        public TCondition condition = new TCondition();
-        public List<ScribeSubCondition<TCondition>> subConditions = new List<ScribeSubCondition<TCondition>>();
+        public TCondition condition = new();
+        public List<ScribeSubCondition<TCondition>> subConditions = new();
 
     }
     

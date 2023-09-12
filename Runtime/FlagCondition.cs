@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 namespace Scribe {
 
-    [System.Serializable]
+    [Serializable]
     public class FlagCondition : ScribeCondition {
 
         [ScribeHideLabel]

@@ -1,14 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Scribe {
 
     public static class ScribeFlags {
         
-        public static Dictionary<string, int> flags = new Dictionary<string, int>();
-        public static Dictionary<string, int> tempFlags = new Dictionary<string, int>();
+        public static Dictionary<string, int> flags = new();
+        public static Dictionary<string, int> tempFlags = new();
 
         public static event Action<string, int, FlagType> OnFlagChanged;
 
@@ -23,7 +21,7 @@ namespace Scribe {
         }
 
         public static int GetFlag(string flagName, bool isTemporary = false) {
-            var selectedFlags = (isTemporary ? tempFlags : flags);
+            Dictionary<string, int> selectedFlags = isTemporary ? tempFlags : flags;
             if (selectedFlags.ContainsKey(flagName)) {
                 return selectedFlags[flagName];
             } else {

@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-
-using UnityEngine;
 
 namespace Scribe {
 
-    [System.Serializable]
+    [Serializable]
     public abstract class ScribeCondition {
 
         [ScribeHideLabel]

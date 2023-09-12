@@ -1,16 +1,16 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
+
 using UnityEngine;
+using UnityEditor;
 
 namespace Scribe.UI {
 
     public static class ScribeEditorUtility {
 
-        public static readonly Dictionary<Type, ScribeTypeData> scribeTypesData = new Dictionary<Type, ScribeTypeData>();
+        public static readonly Dictionary<Type, ScribeTypeData> scribeTypesData = new();
         
         [InitializeOnLoadMethod]
         [MenuItem ("Scribe/Cache Type Data")]
@@ -87,7 +87,7 @@ namespace Scribe.UI {
                 }
 
                 // Get all option values for the current property
-                Dictionary<string, int> optionValues = new Dictionary<string, int>();
+                Dictionary<string, int> optionValues = new();
                 foreach (string optionName in scribeTypesData[type].options) {
                     SerializedProperty propOption = property.FindPropertyRelative( optionName );
                     try {

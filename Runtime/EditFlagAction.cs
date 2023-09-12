@@ -10,15 +10,18 @@ namespace Scribe {
         [ScribeHideLabel]
         [ScribeOption] 
         public FlagOperation eventType;
+
         
         [ScribeHideLabel]
         [ScribeField(nameof(eventType), (int)FlagOperation.SetFlag)]
         [ScribeField(nameof(eventType), (int)FlagOperation.RemoveFlag)]
         public ScribeFlags.FlagType editedFlagType;
 
+
         [ScribeField(nameof(eventType), (int)FlagOperation.SetFlag)]
         [ScribeField(nameof(eventType), (int)FlagOperation.RemoveFlag)]
         public string editedFlagName;
+
 
         [ScribeField(nameof(eventType), (int)FlagOperation.SetFlag)]
         public int editedFlagValue;
@@ -26,7 +29,6 @@ namespace Scribe {
 
 
         public void Invoke() {
-
             switch (eventType) {
                 case FlagOperation.SetFlag:
                     ScribeFlags.SetFlag(editedFlagName, editedFlagValue, editedFlagType == ScribeFlags.FlagType.TemporaryFlag);
@@ -34,6 +36,8 @@ namespace Scribe {
                 case FlagOperation.RemoveFlag:
                     ScribeFlags.RemoveFlag(editedFlagName, editedFlagType == ScribeFlags.FlagType.TemporaryFlag);
                     break;
+                default:
+                    throw new System.NotImplementedException();
             }
         }
 
